@@ -4,6 +4,7 @@
 
 
 
+
 @plugin "daisyui/theme" {
   name: "black";
   default: false;
@@ -19,7 +20,7 @@
   --color-secondary-content: oklch(100% 0 0);
   --color-accent: oklch(35% 0 0);
   --color-accent-content: oklch(100% 0 0);
-  --color-neutral: oklch(35% 0 0);
+  --color-neutral: oklch(26% 0 0);
   --color-neutral-content: oklch(100% 0 0);
   --color-info: oklch(45.201% 0.313 264.052);
   --color-info-content: oklch(89.04% 0.062 264.052);

@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql" // Pour MVP
+  url      = env("DATABASE_URL")
+}
+
+// ------------------
+// Utilisateurs
+// ------------------
+model User {
+  id        String       @id @default(uuid())
+  email     String       @unique
+  password  String
+  projects  ProjectUser[]  // relation via table pivot
+}
+
+// ------------------
+// Projets
+// ------------------
+model Project {
+  id        String         @id @default(uuid())
+  name      String
+  createdAt DateTime       @default(now())
+  users     ProjectUser[]  // relation multi-user
+  modules   ProjectModule[] // modules activés pour ce projet
+}
+
+// ------------------
+// Modules disponibles
+// ------------------
+model Module {
+  id          String          @id @default(uuid())
+  name        String          @unique
+  description String?
+  projects    ProjectModule[] // relation avec ProjectModule
+}
+
+// ------------------
+// Relation Projet <-> Module
+// ------------------
+model ProjectModule {
+  id        String   @id @default(uuid())
+  projectId String
+  moduleId  String
+  config    Json?    // config du module (ex: repoUrl, branch)
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id])
+  module  Module  @relation(fields: [moduleId], references: [id])
+
+  @@unique([projectId, moduleId]) // un module activé une seule fois par projet
+}
+
+// ------------------
+// Relation Projet <-> Utilisateur
+// ------------------
+model ProjectUser {
+  id        String   @id @default(uuid())
+  projectId String
+  userId    String
+  role      String   @default("member") // owner, admin, member
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@unique([projectId, userId]) // pas deux fois le même user dans un projet
+}

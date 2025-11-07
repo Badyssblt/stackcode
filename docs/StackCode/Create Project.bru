@@ -1,0 +1,21 @@
+meta {
+  name: Create Project
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/projects
+  body: json
+  auth: none
+}
+
+headers {
+  Cookie: next-auth.session-token={{token}}
+}
+
+body:json {
+  {
+    
+  }
+}
