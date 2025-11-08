@@ -3,9 +3,10 @@
         <li>
             <details open>
             <summary>Mes projets</summary>
+            
             <ul>
                 
-                <li v-for="project in projects"><a>Project 1</a></li>
+                <li v-for="project in projects"><a>{{ project.name  }}</a></li>
             </ul>
             </details>
         </li>

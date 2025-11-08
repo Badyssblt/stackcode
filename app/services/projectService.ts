@@ -3,7 +3,7 @@ export const getAllProjects = async () => {
         const data = await $fetch('/api/projects');
         console.log(data);
         
-        return data.value || [];
+        return data || [];
     }catch (error) {
         console.log(error);
         

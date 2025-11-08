@@ -1,0 +1,15 @@
+meta {
+  name: CSRF Token
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/auth/csrf
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
