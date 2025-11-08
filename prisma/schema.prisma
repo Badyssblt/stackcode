@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql" // Pour MVP
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -14,6 +14,8 @@ model User {
   id        String       @id @default(uuid())
   email     String       @unique
   password  String
+  firstname String
+  lastname  String
   projects  ProjectUser[]  // relation via table pivot
 }
 
@@ -24,8 +26,9 @@ model Project {
   id        String         @id @default(uuid())
   name      String
   createdAt DateTime       @default(now())
-  users     ProjectUser[]  // relation multi-user
-  modules   ProjectModule[] // modules activés pour ce projet
+  repoUrl   String?
+  users     ProjectUser[]
+  modules   ProjectModule[]
 }
 
 // ------------------
@@ -35,7 +38,7 @@ model Module {
   id          String          @id @default(uuid())
   name        String          @unique
   description String?
-  projects    ProjectModule[] // relation avec ProjectModule
+  projects    ProjectModule[]
 }
 
 // ------------------

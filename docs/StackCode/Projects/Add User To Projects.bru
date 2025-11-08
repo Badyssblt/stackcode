@@ -1,0 +1,26 @@
+meta {
+  name: Add User To Projects
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/projects/:id/users
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: b38b7336-323a-4c62-88ad-7a639e5242df
+}
+
+body:json {
+  {
+    "email": "badyss2@gmail.com",
+    "role": "admin"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

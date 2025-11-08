@@ -5,7 +5,7 @@ services:
     container_name: stackcode_web_dev
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     volumes:
@@ -20,22 +20,7 @@ services:
       - mariadb
       - redis
 
-  worker:
-    container_name: stackcode_worker_dev
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    volumes:
-      - .:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - DATABASE_URL=mysql://stackcode:stackcode@mariadb:3306/stackcode
-      - REDIS_URL=redis://redis:6379
-    depends_on:
-      - mariadb
-      - redis
-    command: ["npm", "run", "worker"]
+
 
   mariadb:
     image: mariadb:11
@@ -64,15 +49,6 @@ services:
     depends_on:
       - mariadb
 
-  redis:
-    image: redis:7
-    container_name: stackcode_redis_dev
-    restart: always
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data_dev:/data
 
 volumes:
   mariadb_data:
-  redis_data_dev:

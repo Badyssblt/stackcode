@@ -10,9 +10,12 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@next-auth/prisma-adapter": "^1.0.7",
     "@prisma/nuxt": "^0.3.0",
+    "@sidebase/authjs-prisma-adapter": "^0.1.0",
     "@sidebase/nuxt-auth": "^1.1.0",
     "@tailwindcss/vite": "^4.1.17",
+    "bcryptjs": "^3.0.3",
     "daisyui": "^5.4.7",
     "next-auth": "~4.21.1",
     "nuxt": "^4.2.0",
