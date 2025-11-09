@@ -13,7 +13,7 @@
                     Créer un projet
                 </button>
                 </li>
-                <li v-for="project in projects"><a>{{ project.name  }}</a></li>
+                <ProjectCardSidebar v-for="project in projects" :project="project"/>
             </ul>
             </details>
         </li>
@@ -43,6 +43,7 @@
 
 <script setup lang="ts">
 import { Plus } from 'lucide-vue-next';
+import ProjectCardSidebar from '../project/ProjectCardSidebar.vue';
 
 const { projects, getProjects, createProject } = useProjects();
 
