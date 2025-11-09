@@ -43,3 +43,7 @@
 @utility modal-box {
   @apply border border-base-200
 }
+
+@utility dropdown-content {
+  @apply border border-base-200
+}

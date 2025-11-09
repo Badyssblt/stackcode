@@ -1,9 +1,9 @@
-import { getAllProjects, addProject } from "~/services/projectService";
+import { getAllProjects, addProject, getOneProject } from "~/services/projectService";
 
 export const useProjects = () => {
 
     const projects = useState('projects', () => []);
-
+    
     /**
      * Récupère tous les projets de l'utilisateur courant
      */
@@ -27,10 +27,22 @@ export const useProjects = () => {
         }
     }
 
+    const getProject = async (id: string) => {
+        try {
+            const data = await getOneProject(id)
+    
+            return data
+        }catch (error) {
+            console.log(error);
+            
+        }
+    }
+
     return {
         projects,
         getProjects,
-        createProject
+        createProject,
+        getProject
     }
 
 }
