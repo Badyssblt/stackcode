@@ -9,7 +9,11 @@ export default defineNuxtConfig({
   },
 
   css: ["./app/tailwind.css"],
-  modules: ["@sidebase/nuxt-auth", "@prisma/nuxt"],
+  modules: [
+    "@sidebase/nuxt-auth",
+    "@prisma/nuxt",
+    "nuxt-lucide-icons",
+  ],
   auth: {
     provider: {
       type: 'authjs',
@@ -17,5 +21,5 @@ export default defineNuxtConfig({
       defaultProvider: 'github',
       addDefaultCallbackUrl: true
     }
-  }
+  },
 })

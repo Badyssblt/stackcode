@@ -20,6 +20,7 @@
     "next-auth": "~4.21.1",
     "nuxt": "^4.2.0",
     "nuxt-auth-utils": "^0.5.25",
+    "nuxt-lucide-icons": "^2.0.0",
     "tailwindcss": "^4.1.17",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"

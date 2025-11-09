@@ -1,6 +1,6 @@
-import { getAllProjects } from "~/services/projectService";
+import { getAllProjects, addProject } from "~/services/projectService";
 
-export const useProjects = async () => {
+export const useProjects = () => {
 
     const projects = useState('projects', () => []);
 
@@ -8,12 +8,29 @@ export const useProjects = async () => {
      * Récupère tous les projets de l'utilisateur courant
      */
     const getProjects = async () => {
-        projects.value = await getAllProjects();
-    };
+        try {
+            const data = await getAllProjects()
+            if(data) projects.value = data
+        
+            return data
+        }catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    const createProject = async (name: string) => {
+        try {
+            const response = await addProject(name)
+            return response
+        }catch (error) {
+        }
+    }
 
     return {
         projects,
-        getProjects
+        getProjects,
+        createProject
     }
 
 }

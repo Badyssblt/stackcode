@@ -39,3 +39,7 @@
   --depth: 0;
   --noise: 0;
 }
+
+@utility modal-box {
+  @apply border border-base-200
+}
