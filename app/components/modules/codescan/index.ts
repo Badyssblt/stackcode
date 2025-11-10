@@ -1,0 +1,1 @@
+export { default as CodeScanContent } from "./TabContent.vue"
