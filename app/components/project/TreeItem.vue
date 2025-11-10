@@ -77,7 +77,10 @@ const isFolder = computed(() => {
 })
 
 const read = async () => {  
-    fileSelected.value = fileName.value
+    fileSelected.value = {
+      path: props.node.path,
+      name: fileName.value
+    }
     const data = await readFile(props.node.path)
 }
 </script>

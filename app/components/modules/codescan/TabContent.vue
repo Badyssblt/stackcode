@@ -47,5 +47,18 @@ onMounted(async () => {
 </script>
 
 <style scoped> 
+:deep(code){
+    counter-reset: step;
+  counter-increment: step 0;
+}
 
+:deep(code .line::before){
+  content: counter(step);
+  counter-increment: step;
+  width: 1rem;
+  margin-right: 1.5rem;
+  display: inline-block;
+  text-align: right;
+  color: rgba(115,138,148,.4)
+}
 </style>

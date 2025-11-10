@@ -28,11 +28,11 @@
         <input type="radio" name="analyze_tab_1" class="tab" aria-label="Analyse de fichier" />
         <div class="tab-content">
             <div class="flex flex-col">
-                <button class="btn btn-sm btn-primary w-full" @click="analyzeLatestVersion">
+                <button class="btn btn-sm btn-primary w-full" @click="analyzeFileSelected">
                     <span v-if="loading" class="loading loading-spinner"></span>
                     Analyser ce fichier
                 </button>
-                <p class="text-xs text-center my-1 ">{{ fileSelected }}</p>
+                <p class="text-xs text-center my-1 ">{{ fileSelected.name }}</p>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@ const { project } = useProjects()
 const { fileSelected } = useCodescan()
 
 
-const { analyzeDependancies } = useCodescan()
+const { analyzeDependancies, analyzeCode } = useCodescan()
 
 const dependancies = ref<Dependency[]>([])
 const analyzeLatestVersion = async () => {
@@ -58,5 +58,11 @@ const analyzeLatestVersion = async () => {
     dependancies.value = await analyzeDependancies(project.value?.repoUrl, 'dev')
     loading.value = false
     
+}
+
+const analyzeFileSelected = async () => {
+    loading.value = true
+    await analyzeCode(project.value?.repoUrl, fileSelected.value.path)
+    loading.value = false
 }
 </script>

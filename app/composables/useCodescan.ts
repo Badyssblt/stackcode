@@ -1,4 +1,4 @@
-import { getAllDependancies } from "~/services/codescanService";
+import { analyzeCodeContent, getAllDependancies } from "~/services/codescanService";
 
 export const useCodescan = () => {
 
@@ -14,8 +14,20 @@ export const useCodescan = () => {
         }
     }
 
+        const analyzeCode = async (repoUrl: string, branch: string, filePath: string) => {
+            try {
+                const response = await analyzeCodeContent(repoUrl, branch, filePath)
+                return response
+            }catch (error) {
+                console.log(error);
+                
+            }
+        }
+
+
     return {
         analyzeDependancies,
+        analyzeCode,
         fileSelected
     }
 }
