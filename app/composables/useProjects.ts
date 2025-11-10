@@ -1,10 +1,9 @@
-import { getAllProjects, addProject, getOneProject, getOneRepository } from "~/services/projectService";
+import { getAllProjects, addProject, getOneProject } from "~/services/projectService";
 import type { Project } from '@@/types/types';
 
 export const useProjects = () => {
 
     const projects = useState<Project[]>('projects', () => []);
-    const repository = useState('repository', () => null);
     /**
      * Récupère tous les projets de l'utilisateur courant
      */
@@ -20,16 +19,7 @@ export const useProjects = () => {
         }
     }
 
-    const getRepository = async () => {
-        try {
-            const data = await getOneRepository()
-            if(data) repository.value = data
-            return data
-        }catch (error) {
-            console.log(error);
-            
-        }
-    }
+
 
     const createProject = async (name: string) => {
         try {
@@ -55,8 +45,6 @@ export const useProjects = () => {
         getProjects,
         createProject,
         getProject,
-        getRepository,
-        repository
     }
 
 }

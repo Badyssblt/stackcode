@@ -1,7 +1,7 @@
 <template>
     <div class="flex">
         <Sidebar />
-        <div class="p-2 flex-1">
+        <div class="flex-1">
             <slot />
         </div>
     </div>

@@ -1,3 +1,5 @@
+import { getAccessToken } from "~~/server/utils/account"
+
 export default defineEventHandler(async (event) => {
   const { repoUrl, branch } = await readBody(event)
 
@@ -9,8 +11,18 @@ export default defineEventHandler(async (event) => {
 
   const [_, owner, repo] = match
 
+  const account = await getAccessToken(event, "github")
+  const githubToken = account?.access_token
+
+  
+
   // Étape 1 : Récupérer les infos du repo pour connaître la branche par défaut
-  const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`)
+  const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+    headers: {
+      "Authorization": githubToken ? `Bearer ${githubToken}` : "",
+    }
+  })
+  
   if (!repoRes.ok) throw createError({ statusCode: repoRes.status, statusMessage: "GitHub API error (repo)" })
     
   
@@ -19,7 +31,12 @@ export default defineEventHandler(async (event) => {
 
   // Étape 2 : Récupérer le SHA du dernier commit de la branche
   const branchRes = await fetch(
-    `https://api.github.com/repos/${owner}/${repo}/branches/${branchToUse}`
+    `https://api.github.com/repos/${owner}/${repo}/branches/${branchToUse}`,
+    {
+    headers: {
+      "Authorization": githubToken ? `Bearer ${githubToken}` : "",
+    }
+  }
   )
   if (!branchRes.ok) throw createError({ statusCode: branchRes.status, statusMessage: "GitHub API error (branch)" })
   
@@ -28,7 +45,12 @@ export default defineEventHandler(async (event) => {
 
   // Étape 3 : Récupérer l'arborescence complète avec le SHA
   const treeRes = await fetch(
-    `https://api.github.com/repos/${owner}/${repo}/git/trees/${commitSha}?recursive=1`
+    `https://api.github.com/repos/${owner}/${repo}/git/trees/${commitSha}?recursive=1`,
+    {
+    headers: {
+      "Authorization": githubToken ? `Bearer ${githubToken}` : "",
+    }
+  }
   )
   if (!treeRes.ok) throw createError({ statusCode: treeRes.status, statusMessage: "GitHub API error (tree)" })
 

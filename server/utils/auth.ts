@@ -19,3 +19,4 @@ export async function getCurrentUser(event: any) {
 
   return user
 }
+

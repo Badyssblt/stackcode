@@ -47,3 +47,8 @@
 @utility dropdown-content {
   @apply border border-base-200
 }
+
+
+@utility shiki {
+  @apply p-4 rounded-md text-sm flex-1 overflow-y-auto
+}

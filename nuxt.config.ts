@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     "@sidebase/nuxt-auth",
     "@prisma/nuxt",
     "nuxt-lucide-icons",
+    "nuxt-shiki",
   ],
   auth: {
     provider: {

@@ -1,28 +1,15 @@
 <template>
-<div>
-    <h3 class="text-xl font-bold">{{  project.name  }}</h3>
+<div class="flex flex-col h-screen p-2">
+    <h3 class="text-xl font-bold">{{ project.name }}</h3>
 
-        <!-- name of each tab group should be unique -->
-    <div class="tabs tabs-border w-full">
-        <input type="radio" name="my_tabs_2" class="tab" aria-label="CodeScan" checked="checked"/>
-        <div class="tab-content border-base-200 bg-base-100 p-10 mt-2">
-            <div>
-                <CodeScanContent/>
-            </div>
-        </div>
-
-        <input type="radio" name="my_tabs_2" class="tab" aria-label="Tab 2"  />
-        <div class="tab-content border-base-300 bg-base-100 p-10">
-            Tab content 2
-        </div>
-
-        <input type="radio" name="my_tabs_2" class="tab" aria-label="Tab 3" />
-        <div class="tab-content border-base-300 bg-base-100 p-10">
-            Tab content 3
+    <div class="tabs tabs-border w-full flex-1 min-h-0 flex flex-col">
+        <input type="radio" name="my_tabs_2" class="tab w-fit" aria-label="CodeScan" checked="checked" />
+        <div class="tab-content border-base-200 bg-base-100 p-2 flex-1 min-h-0">
+            <CodeScanContent/>
         </div>
     </div>
 </div>
-</template> 
+</template>
 
 <script setup lang="ts">
 import { CodeScanContent } from '~/components/modules/codescan';

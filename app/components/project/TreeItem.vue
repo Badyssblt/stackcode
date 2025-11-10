@@ -28,7 +28,7 @@
     </details>
 
     <!-- Fichier -->
-    <p v-else class="cursor-pointer hover:bg-base-300" @click="readFile">
+    <p v-else class="cursor-pointer hover:bg-base-300" @click="read">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -48,6 +48,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useGithub } from '~/composables/useGithub'
 
 interface TreeNode {
   path: string
@@ -64,6 +65,8 @@ const props = withDefaults(defineProps<Props>(), {
   level: 0
 })
 
+const { readFile } = useGithub()
+
 const fileName = computed(() => {
   return props.node.path.split('/').pop() || props.node.path
 })
@@ -72,8 +75,8 @@ const isFolder = computed(() => {
   return props.node.type === 'tree'
 })
 
-const readFolder = async () => {
-    
+const read = async () => {  
+    const data = await readFile(props.node.path)
 }
 </script>
 

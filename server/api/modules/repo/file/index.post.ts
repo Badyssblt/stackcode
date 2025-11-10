@@ -1,11 +1,20 @@
+import { getAccessToken } from "~~/server/utils/account"
+
 // server/api/github/file.post.ts
 export default defineEventHandler(async (event) => {
-  const { owner, repo, branch, path } = await readBody(event)
+  const { repoUrl, branch, path } = await readBody(event)
 
-  const user = await getCurrentUser(event)
-  console.log(user);
+  // Supprimer .git si présent
+  const cleanUrl = repoUrl.replace(/\.git$/, "")
+
+  const match = cleanUrl.match(/github\.com\/([^/]+)\/([^/]+)/)
+  if (!match) throw createError({ statusCode: 400, statusMessage: "Invalid GitHub URL" })
+
+  const [_, owner, repo] = match
+
   
-  const githubToken = process.env.GITHUB_TOKEN
+  const account = await getAccessToken(event, "github")
+  const githubToken = account?.access_token
   
   const headers: HeadersInit = {
     'Accept': 'application/vnd.github+json',

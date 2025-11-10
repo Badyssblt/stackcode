@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { useGithub } from '~/composables/useGithub'
 import TreeItem from './TreeItem.vue'
 
 interface TreeNode {
@@ -29,7 +29,7 @@ interface GitHubApiResponse {
   tree: Array<{ path: string; type: 'blob' | 'tree' }>
 }
 
-const { repository } = useProjects()
+const { repository } = useGithub()
 
 
 // Fonction pour déterminer si un chemin est un dossier
