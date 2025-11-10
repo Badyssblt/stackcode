@@ -52,10 +52,38 @@ function CustomPrismaAdapter(p: PrismaClient): Adapter {
     },
     
     async linkAccount(data: any) {
-      const user = await p.user.findUnique({
-        where: { id: data.userId }
-      })
+      // Vérifier si le compte existe déjà
+      const existingAccount = await p.account.findUnique({
+        where: {
+          provider_providerAccountId: {
+            provider: data.provider,
+            providerAccountId: data.providerAccountId,
+          },
+        },
+      });
+
+      console.log("test");
       
+    
+      if (existingAccount) {
+        // Mettre à jour le token existant
+        const updated = await p.account.update({
+          where: { id: existingAccount.id },
+          data: {
+            refresh_token: data.refresh_token,
+            access_token: data.access_token,
+            expires_at: data.expires_at,
+            token_type: data.token_type,
+            scope: data.scope,
+            id_token: data.id_token,
+            session_state: data.session_state,
+          },
+        });
+        return updated;
+      }
+    
+      // Sinon, créer un nouveau compte
+      const user = await p.user.findUnique({ where: { id: data.userId } });
       const account = await p.account.create({
         data: {
           userId: data.userId,
@@ -71,10 +99,11 @@ function CustomPrismaAdapter(p: PrismaClient): Adapter {
           session_state: data.session_state,
           name: user ? `${user.firstname} ${user.lastname}`.trim() : null,
         },
-      })
-      
-      return account
+      });
+    
+      return account;
     },
+    
     
     async getUser(id: string) {
       const user = await p.user.findUnique({
@@ -152,17 +181,51 @@ export default NuxtAuthHandler({
     
     // JWT callback - appelé quand le token JWT est créé ou mis à jour
     async jwt({ token, user, account }) {
-      // Lors de la connexion initiale (user est défini)
-      if (user) {
-        token.id = user.id
-        token.email = user.email
-        token.firstname = user.firstname
-        token.lastname = user.lastname
-        token.name = user.name || `${user.firstname} ${user.lastname}`.trim()
-        token.image = user.image
+      // Si on a un account (OAuth) lors du login
+      if (account && user && account.provider === "github") {
+        // Mettre à jour ou créer le compte GitHub dans la DB
+        await prisma.account.upsert({
+          where: {
+            provider_providerAccountId: {
+              provider: account.provider,
+              providerAccountId: account.providerAccountId,
+            },
+          },
+          update: {
+            access_token: account.access_token,
+            refresh_token: account.refresh_token,
+            expires_at: account.expires_at,
+            scope: account.scope,
+            token_type: account.token_type,
+            id_token: account.id_token,
+            session_state: account.session_state,
+          },
+          create: {
+            userId: user.id,
+            type: account.type,
+            provider: account.provider,
+            providerAccountId: account.providerAccountId,
+            access_token: account.access_token,
+            refresh_token: account.refresh_token,
+            expires_at: account.expires_at,
+            scope: account.scope,
+            token_type: account.token_type,
+            id_token: account.id_token,
+            session_state: account.session_state,
+          },
+        });
       }
-      
-      return token
+  
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.firstname = user.firstname;
+        token.lastname = user.lastname;
+        token.name = user.name || `${user.firstname} ${user.lastname}`.trim();
+        token.image = user.image;
+      }
+  
+      return token;
     },
     
     // Session callback - appelé quand la session est vérifiée

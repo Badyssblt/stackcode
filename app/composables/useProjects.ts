@@ -4,6 +4,7 @@ import type { Project } from '@@/types/types';
 export const useProjects = () => {
 
     const projects = useState<Project[]>('projects', () => []);
+    const project = useState<Project | null>('project', () => null);
     /**
      * Récupère tous les projets de l'utilisateur courant
      */
@@ -32,7 +33,7 @@ export const useProjects = () => {
     const getProject = async (id: string) => {
         try {
             const data = await getOneProject(id)
-    
+            project.value = data
             return data
         }catch (error) {
             console.log(error);
@@ -42,6 +43,7 @@ export const useProjects = () => {
 
     return {
         projects,
+        project,
         getProjects,
         createProject,
         getProject,

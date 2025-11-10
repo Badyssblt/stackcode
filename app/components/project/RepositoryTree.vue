@@ -30,6 +30,7 @@ interface GitHubApiResponse {
 }
 
 const { repository } = useGithub()
+const { fileSelected } = useCodescan()
 
 
 // Fonction pour déterminer si un chemin est un dossier

@@ -66,6 +66,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const { readFile } = useGithub()
+const { fileSelected } = useCodescan()
 
 const fileName = computed(() => {
   return props.node.path.split('/').pop() || props.node.path
@@ -76,6 +77,7 @@ const isFolder = computed(() => {
 })
 
 const read = async () => {  
+    fileSelected.value = fileName.value
     const data = await readFile(props.node.path)
 }
 </script>

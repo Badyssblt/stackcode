@@ -23,8 +23,13 @@ export default defineEventHandler(async (event) => {
     }
   })
   
-  if (!repoRes.ok) throw createError({ statusCode: repoRes.status, statusMessage: "GitHub API error (repo)" })
-    
+  if (!repoRes.ok) {
+    const errorData = await repoRes.json().catch(() => ({}))
+    throw createError({ 
+      statusCode: repoRes.status, 
+      statusMessage: errorData.message || "GitHub API error (repo)" 
+    })
+  }    
   
   const repoData = await repoRes.json()
   const branchToUse = branch || repoData.default_branch || "main"

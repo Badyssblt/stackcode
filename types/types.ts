@@ -85,3 +85,11 @@ export type VerificationToken = {
   token: string;
   expires: Date;
 };
+
+export type Dependency = {
+  name: string;
+  currentVersion: string;
+  latestVersion: string;
+  license: string | null;
+  riskLevel: "low" | "medium" | "high" | "unknown";
+};
