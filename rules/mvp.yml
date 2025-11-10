@@ -1,0 +1,24 @@
+rules:
+  - id: detect-eval
+    languages: [js, ts]
+    severity: WARNING
+    message: "Avoid using eval()"
+    pattern: "eval(...)"
+
+  - id: detect-new-function
+    languages: [js, ts]
+    severity: WARNING
+    message: "Avoid using new Function()"
+    pattern: "new Function(...)"
+
+  - id: detect-hardcoded-secret
+    languages: [js, ts]
+    severity: ERROR
+    message: "Potential hardcoded secret"
+    pattern: "API_KEY = ..."
+
+  - id: detect-console-password
+    languages: [js, ts]
+    severity: WARNING
+    message: "Logging password is risky"
+    pattern: 'console.log("Password")'
