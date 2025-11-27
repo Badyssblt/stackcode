@@ -6,12 +6,14 @@ export default defineNuxtConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: ['vuedraggable', '@tanstack/vue-table', 'shiki']
+    }
   },
 
   css: ["./app/tailwind.css"],
   modules: [
     "@sidebase/nuxt-auth",
-    "@prisma/nuxt",
     "nuxt-lucide-icons",
     "nuxt-shiki",
   ],

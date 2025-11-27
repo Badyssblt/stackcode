@@ -1,5 +1,5 @@
 import { getServerSession } from '#auth'
-import prisma from "../../lib/prisma";
+import {prisma} from "../../lib/prisma";
 
 export async function getCurrentUser(event: any) {
     

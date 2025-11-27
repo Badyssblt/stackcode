@@ -4,8 +4,8 @@ import { PrismaAdapter } from '@sidebase/authjs-prisma-adapter'
 import { PrismaClient } from '@prisma/client'
 import type { Adapter } from 'next-auth/adapters'
 import bcrypt from 'bcryptjs'
-import prisma from "../../../lib/prisma"
 import { NuxtAuthHandler } from '#auth'
+import { prisma } from '~~/lib/prisma'
 
 // Fonction helper pour parser les noms
 function parseFullName(fullName: string) {

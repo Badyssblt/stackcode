@@ -1,9 +1,9 @@
 <template>
   <div>
     <ul class="menu menu-xs bg-base-200 rounded-box max-w-xs w-full">
-      <TreeItem 
-        v-for="node in tree" 
-        :key="node.path" 
+      <ProjectTreeItem
+        v-for="node in tree"
+        :key="node.path"
         :node="node"
         :level="0"
       />
@@ -12,8 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import { useGithub } from '~/composables/useGithub'
-import TreeItem from './TreeItem.vue'
 
 interface TreeNode {
   path: string

@@ -1,5 +1,5 @@
 import { getCurrentUser } from "~~/server/utils/auth";
-import prisma from "~~/lib/prisma";
+import {prisma} from "~~/lib/prisma";
 
 export default defineEventHandler(async (event) => {
 

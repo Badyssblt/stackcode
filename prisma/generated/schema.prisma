@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// ------------------
+// Utilisateurs
+// ------------------
+model User {
+  id            String        @id @default(uuid())
+  email         String        @unique
+  password      String?
+  firstname     String?
+  lastname      String?
+  name          String?
+  projects      ProjectUser[]
+  emailVerified Boolean?      @default(false)
+  image         String?
+
+  accounts Account[]
+  sessions Session[]
+
+  invitations ProjectUserInvitation[]
+  tasks       Task[]
+}
+
+// ------------------
+// Projets
+// ------------------
+model Project {
+  id        String          @id @default(uuid())
+  name      String
+  createdAt DateTime        @default(now())
+  repoUrl   String?
+  users     ProjectUser[]
+  modules   ProjectModule[]
+
+  invitations ProjectUserInvitation[]
+  tasks       Task[]
+}
+
+// ------------------
+// Modules disponibles
+// ------------------
+model Module {
+  id          String          @id @default(uuid())
+  name        String          @unique
+  description String?
+  projects    ProjectModule[]
+}
+
+// ------------------
+// Relation Projet <-> Module
+// ------------------
+model ProjectModule {
+  id        String   @id @default(uuid())
+  projectId String
+  moduleId  String
+  config    Json? // config du module (ex: repoUrl, branch)
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id])
+  module  Module  @relation(fields: [moduleId], references: [id])
+
+  @@unique([projectId, moduleId]) // un module activé une seule fois par projet
+}
+
+// ------------------
+// Relation Projet <-> Utilisateur
+// ------------------
+model ProjectUser {
+  id        String   @id @default(uuid())
+  projectId String
+  userId    String
+  role      String   @default("member") // owner, admin, member
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@unique([projectId, userId]) // pas deux fois le même user dans un projet
+}
+
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String  @unique
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
+  refresh_token_expires_in Int?
+  user                     User?   @relation(fields: [userId], references: [id])
+
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model ProjectUserInvitation {
+  id        String   @id @default(uuid())
+  projectId String
+  email     String // email de la personne invitée
+  role      String   @default("member")
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id])
+  user    User?   @relation(fields: [email], references: [email])
+
+  @@unique([projectId, email])
+}
+
+// ------------------
+// Tasks (Tâches)
+// ------------------
+model Task {
+  id          String   @id @default(uuid())
+  title       String
+  description String?  @db.Text
+  status      String   @default("todo") // todo, in_progress, review, done
+  priority    String   @default("medium") // low, medium, high
+  assignedTo  String?
+  projectId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id])
+  user    User?   @relation(fields: [assignedTo], references: [id])
+
+  @@index([projectId])
+  @@index([assignedTo])
+}

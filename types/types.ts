@@ -14,6 +14,16 @@ export type User = {
   sessions?: Session[];
 };
 
+export type Notification = {
+  id: string;
+  projectId: string;
+  email: string;
+  role: string;
+  createdAt: Date;
+  project: Project;
+  user: User
+}
+
 export type Project = {
   id: string;
   name: string;
@@ -21,6 +31,7 @@ export type Project = {
   repoUrl?: string | null;
   users?: ProjectUser[];
   modules?: ProjectModule[];
+  invitations: Record<string, string>[]
 };
 
 export type Module = {
@@ -92,4 +103,18 @@ export type Dependency = {
   latestVersion: string;
   license: string | null;
   riskLevel: "low" | "medium" | "high" | "unknown";
+};
+
+export type TaskStatus = "todo" | "in_progress" | "review" | "done";
+
+export type Task = {
+  id: string;
+  title: string;
+  description?: string | null;
+  status: TaskStatus;
+  priority?: "low" | "medium" | "high";
+  assignedTo?: string | null;
+  projectId: string;
+  createdAt: Date;
+  updatedAt: Date;
 };

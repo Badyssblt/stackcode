@@ -1,15 +1,15 @@
-import { PrismaClient } from '@prisma/client'
+import "dotenv/config";
+import { PrismaMariaDb } from '@prisma/adapter-mariadb';
+// @ts-ignore
+import { PrismaClient } from '~~/prisma/generated/index.js';
 
-const prismaClientSingleton = () => {
-  return new PrismaClient()
-}
+const adapter = new PrismaMariaDb({
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_NAME,
+  connectionLimit: 5
+});
+const prisma = new PrismaClient({ adapter });
 
-declare const globalThis: {
-  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
-} & typeof global;
-
-const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
-
-export default prisma
-
-if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma
+export { prisma }

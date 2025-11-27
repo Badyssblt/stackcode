@@ -18,9 +18,9 @@
         {{ fileName }}
       </summary>
       <ul v-if="node.children && node.children.length > 0">
-        <TreeItem 
-          v-for="child in node.children" 
-          :key="child.path" 
+        <ProjectTreeItem
+          v-for="child in node.children"
+          :key="child.path"
           :node="child"
           :level="level + 1"
         />
@@ -47,8 +47,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useGithub } from '~/composables/useGithub'
 
 interface TreeNode {
   path: string

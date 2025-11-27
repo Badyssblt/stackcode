@@ -1,47 +1,44 @@
 <template>
-<div class="flex flex-1 min-h-0 gap-2 h-full">
-      <RepositoryTree />
+  <!-- Ce conteneur doit pouvoir grandir ET limiter la hauteur -->
+  <div class="flex flex-1 min-h-0 gap-2 h-full">
+    <ProjectRepositoryTree class="h-[820px] overflow-y-auto"/>
 
-      <div class="flex-1 min-h-0 overflow-y-auto rounded">
-        <div v-html="code"></div>
-      </div>
+    <!-- 🟩 Ce bloc DOIT avoir flex + min-h-0 + overflow-y-auto -->
+    <div class="flex-1 min-h-0 h-[820px] overflow-y-auto rounded bg-base-200 p-2">
+      <div v-html="code"></div>
+    </div>
 
-      <ModulesCodescanAnalyze/>
-</div>
+    <ModulesCodescanAnalyze />
+  </div>
 </template>
 
 <script setup lang="ts">
-import RepositoryTree from '~/components/project/RepositoryTree.vue';
-import CodeScanAnalyze from '~/components/modules/codescan/Analyze.vue';
-import { useGithub } from '~/composables/useGithub';
 import { createHighlighter } from 'shiki'
 
 const { getRepository, currentFileContent } = useGithub()
 
-const highlighter = await createHighlighter({
-  themes: ['slack-dark'],
-  langs: ['css', 'javascript', 'typescript', 'json', 'vue', 'html']
-})
-await highlighter.loadLanguage('javascript')
+const highlighter = ref<any>(null)
 const code = ref('')
 
-
 watch(currentFileContent, async (newContent) => {
-  if (newContent) {
-    code.value = highlighter.codeToHtml(
+  if (newContent && highlighter.value) {
+    code.value = highlighter.value.codeToHtml(
       newContent.content,
-      { lang: 'javascript', 
+      { lang: 'javascript',
       theme: 'slack-dark',
         lineNumbers: true
     },
-      
+
     )
   }
 })
 
-
-
 onMounted(async () => {
+    highlighter.value = await createHighlighter({
+      themes: ['slack-dark'],
+      langs: ['css', 'javascript', 'typescript', 'json', 'vue', 'html']
+    })
+    await highlighter.value.loadLanguage('javascript')
     await getRepository()
 })
 </script>

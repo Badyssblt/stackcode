@@ -1,5 +1,5 @@
 import { getCurrentUser } from "~~/server/utils/auth"
-import prisma from "~~/lib/prisma"
+import {prisma} from "~~/lib/prisma"
 import { checkProjectAccess } from "~~/server/utils/projectRoles"
 
 export default defineEventHandler(async (event) => {

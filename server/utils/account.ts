@@ -1,4 +1,4 @@
-import prisma from "~~/lib/prisma"
+import {prisma} from "~~/lib/prisma"
 
 export const getAccessToken = async (event: any, provider: string) => {
     try {

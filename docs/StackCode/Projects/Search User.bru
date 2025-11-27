@@ -1,0 +1,25 @@
+meta {
+  name: Search User
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/projects/:id/users/search
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: b38b7336-323a-4c62-88ad-7a639e5242df
+}
+
+body:json {
+  {
+    "email": "badyss@gmail.com"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
