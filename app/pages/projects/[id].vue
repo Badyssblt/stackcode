@@ -8,6 +8,10 @@
             <TasksTabContent/>
         </div>
 
+        <input type="radio" name="primary_tabs" class="tab w-fit" aria-label="Utilisateurs" checked />
+        <div class="tab-content border-base-200 bg-base-100 p-2 min-h-0">
+            <UsersTabContent/>
+        </div>
         <input type="radio" name="primary_tabs" class="tab w-fit" aria-label="Modules"  />
         <div class="tab-content border-base-200 bg-base-100 p-2 min-h-0">
             <div class="tabs tabs-border flex-1">
